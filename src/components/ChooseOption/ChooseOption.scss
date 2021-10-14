@@ -1,0 +1,27 @@
+.chooseTitle {
+  color: #fa7844;
+  font-weight: 550;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.chooseOption {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chooseContainer {
+  .chooseCard {
+    border: 0px;
+    border-radius: 10px;
+    background-color: #f3f3f3cf;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      transition: all 0.4s;
+      box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.2) !important;
+    }
+    h4 {
+      color: #2f2f2f;
+    }
+  }
+}
