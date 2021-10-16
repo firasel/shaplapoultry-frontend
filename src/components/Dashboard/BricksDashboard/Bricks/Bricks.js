@@ -7,7 +7,6 @@ import {
   Switch,
   useHistory
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import cancelBtn from "../../../../images/cancelMenu.svg";
 import homeImg from "../../../../images/home.svg";
 import leftArrow from "../../../../images/leftArrow.svg";
@@ -16,6 +15,7 @@ import { setLoggedInUser } from "../../../../redux/loggin";
 import AddAdminEmployee from "../AddAdminEmployee/AddAdminEmployee";
 import AddBricks from "../AddBricks/AddBricks";
 import AddCustomer from "../AddCustomer/AddCustomer";
+import ManageAdminEmployee from "../ManageAdminEmployee/ManageAdminEmployee";
 import { default as ManageBricks } from "../ManageBricks/ManageBricks";
 import ManageCustomer from "../ManageCustomer/ManageCustomer";
 import ShowBrick from "../ShowBrick/ShowBrick";
@@ -25,7 +25,7 @@ import "./Bricks.scss";
 
 const Bricks = () => {
   const [expandSidebar, setExpandSidebar] = useState(false);
-  const [logoutShow,setLogoutShow] = useState(false);
+  const [logoutShow, setLogoutShow] = useState(false);
   const [active, setActive] = useState();
   const { loggedInUser } = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
@@ -39,7 +39,6 @@ const Bricks = () => {
   return (
     <Router>
       <div className="d-flex overflow-hidden">
-        <ToastContainer />
         {/* Dashboard sidBar Start */}
         <div
           className={`bricksSideBar minBricksSideBar min-vh-100 ${
@@ -61,34 +60,42 @@ const Bricks = () => {
             ShaplaPoultry
           </h2>
           {loggedInUser.rule === "admin" && (
-            <div
-              onClick={() => setActive(0)}
-              className={`${active === 0 && "activeBtn"}  sidebarMenu`}
-            >
-              <Link to="/bricks/addaccount">Add Admin/Employee</Link>
-            </div>
+            <>
+              <div
+                onClick={() => setActive(0)}
+                className={`${active === 0 && "activeBtn"}  sidebarMenu`}
+              >
+                <Link to="/bricks/addaccount">Add Admin/Employee</Link>
+              </div>
+              <div
+                onClick={() => setActive(1)}
+                className={`${active === 1 && "activeBtn"}  sidebarMenu`}
+              >
+                <Link to="/bricks/manageaccount">Manage Admin/Employee</Link>
+              </div>
+            </>
           )}
-          <div
-            onClick={() => setActive(1)}
-            className={`${active === 1 && "activeBtn"}  sidebarMenu`}
-          >
-            <Link to="/bricks/add">Add Product</Link>
-          </div>
           <div
             onClick={() => setActive(2)}
             className={`${active === 2 && "activeBtn"}  sidebarMenu`}
           >
-            <Link to="/bricks/manage">Manage Product</Link>
+            <Link to="/bricks/add">Add Product</Link>
           </div>
           <div
             onClick={() => setActive(3)}
             className={`${active === 3 && "activeBtn"}  sidebarMenu`}
           >
-            <Link to="/bricks/customer/add">Add Customer</Link>
+            <Link to="/bricks/manage">Manage Product</Link>
           </div>
           <div
             onClick={() => setActive(4)}
             className={`${active === 4 && "activeBtn"}  sidebarMenu`}
+          >
+            <Link to="/bricks/customer/add">Add Customer</Link>
+          </div>
+          <div
+            onClick={() => setActive(5)}
+            className={`${active === 5 && "activeBtn"}  sidebarMenu`}
           >
             <Link to="/bricks/customer/manage">Manage Customer</Link>
           </div>
@@ -134,21 +141,31 @@ const Bricks = () => {
                   </div>
                   <div className="dropdown">
                     <button
-                    onClick={()=>{
-                      setLogoutShow(!logoutShow);
-                    }}
+                      onClick={() => {
+                        setLogoutShow(!logoutShow);
+                      }}
                       className="btn dropdown-toggle dopdownBtn"
                     >
-                     {loggedInUser.email}
+                      {loggedInUser.email}
                     </button>
 
-                    <ul className={`dopdownData ${logoutShow && 'dopdownDataShow'}`}
+                    <ul
+                      className={`dopdownData ${
+                        logoutShow && "dopdownDataShow"
+                      }`}
                     >
                       <li>
-                          <button onClick={()=>{
-                            localStorage.removeItem('Authorization');
-                            dispatch(setLoggedInUser({status:false,email:''}))}
-                        } className="btn">Logout</button>
+                        <button
+                          onClick={() => {
+                            localStorage.removeItem("Authorization");
+                            dispatch(
+                              setLoggedInUser({ status: false, email: "" })
+                            );
+                          }}
+                          className="btn"
+                        >
+                          Logout
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -160,11 +177,12 @@ const Bricks = () => {
           {/* Dashboard TopBar End */}
 
           <Switch>
-            {loggedInUser.rule === "admin" && (
-              <Route exact path="/bricks/addaccount">
-                <AddAdminEmployee />
-              </Route>
-            )}
+            <Route path="/bricks/addaccount">
+              <AddAdminEmployee />
+            </Route>
+            <Route path="/bricks/manageaccount">
+              <ManageAdminEmployee />
+            </Route>
             <Route path="/bricks/add">
               <AddBricks />
             </Route>
@@ -178,13 +196,13 @@ const Bricks = () => {
               <ShowBrick />
             </Route>
             <Route path="/bricks/customer/add">
-              <AddCustomer/>
+              <AddCustomer />
             </Route>
             <Route path="/bricks/customer/manage">
-              <ManageCustomer/>
+              <ManageCustomer routeName="bricks" />
             </Route>
             <Route path="/bricks/customer/update/:Id">
-              <UpdateCustomer/>
+              <UpdateCustomer routeName="bricks" />
             </Route>
           </Switch>
         </div>

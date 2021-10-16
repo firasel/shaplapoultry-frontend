@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ChooseOption from "./components/ChooseOption/ChooseOption";
 import Bricks from "./components/Dashboard/BricksDashboard/Bricks/Bricks";
@@ -10,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 function App() {
   return (
     <Router>
+      <ToastContainer autoClose={3000} />
       <Switch>
         <Route exact path="/">
           <Login />

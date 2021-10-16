@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import { ToastContainer } from "react-toastify";
 import backImg from '../../../../images/back.svg';
 import ErrorNotify from "../../../ToastNotify/ErrorNotify";
 import SuccessNotify from "../../../ToastNotify/SuccessNotify";
 
-const UpdateCustomer = () => {
+const UpdateCustomer = ({routeName}) => {
   const [isLodaing, setIsLoading] = useState(false);
   const {
     register,
@@ -48,19 +47,16 @@ const UpdateCustomer = () => {
           ErrorNotify("Data Update Not Success");
         }
         setIsLoading(false);
-        history.push("/bricks/customer/manage");
+        history.push(`/${routeName}/customer/manage`);
       })
       .catch((error) => {
         ErrorNotify("Data Update Not Success");
         setIsLoading(false);
       });
-
-    reset();
   };
 
   return (
     <>
-      <ToastContainer />
       <div className="w-100 px-3 py-2 parentDesign">
         <div className="row p-0 m-0">
           <div className="col-12 col-sm-8 col-md-7 col-lg-6 p-0 mb-4 mx-auto">
@@ -130,7 +126,7 @@ const UpdateCustomer = () => {
                   )}
                 </button>
                 <button
-                  onClick={() => history.push("/bricks/customer/manage")}
+                  onClick={() => history.push(`/${routeName}/customer/manage`)}
                   style={{ background: "#050545" }}
                   className="my-2 formSubmitBtn rounded px-4 py-2 mx-auto"
                 >

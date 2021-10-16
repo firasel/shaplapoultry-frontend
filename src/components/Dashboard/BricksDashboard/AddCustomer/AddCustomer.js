@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import ErrorNotify from "../../../ToastNotify/ErrorNotify";
 import SuccessNotify from "../../../ToastNotify/SuccessNotify";
 
@@ -51,7 +50,6 @@ const AddCustomer = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="w-100 px-3 py-2 parentDesign">
         <div className="row p-0 m-0">
           <div className="col-12 col-sm-8 col-md-7 col-lg-6 p-0 mb-4 mx-auto">

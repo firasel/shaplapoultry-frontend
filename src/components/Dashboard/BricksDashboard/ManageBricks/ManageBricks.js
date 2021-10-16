@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer } from "react-toastify";
 import { setAllBricks } from "../../../../redux/bricks";
 import BricksCard from "../BricksCard/BricksCard";
 
@@ -33,7 +32,6 @@ const ManageBricks = () => {
 
   return (
     <>
-      <ToastContainer />
       <div
         className="w-100 px-3 py-2"
         style={{ background: "#f4fcff", minHeight: "100%" }}

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllCustomer } from "../../../../redux/customer";
-import CustomerCard from "../CustomerCard/CustomerCard";
+import { setAllAdminEmployee } from "../../../../redux/AdminEmployee";
+import AdminEmployeeCard from "../AdminEmployeeCard/AdminEmployeeCard";
 
-const ManageCustomer = ({routeName}) => {
+const ManageAdminEmployee = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { allCustomer } = useSelector((state) => state.customerData);
+  const { allAdminEmployee } = useSelector((state) => state.adminEmployeeData);
   const { anyDataChange } = useSelector((state) => state.anyDataChange);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://shaplapoultrysapi.herokuapp.com/customer/all", {
+    fetch("https://shaplapoultrysapi.herokuapp.com/user/all", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,14 +21,14 @@ const ManageCustomer = ({routeName}) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.status) {
-          dispatch(setAllCustomer(data.data));
+          dispatch(setAllAdminEmployee(data.data));
         }
         setIsLoading(false);
       })
       .catch((err) => {
         setIsLoading(false);
       });
-  }, [dispatch,anyDataChange]);
+  }, [dispatch, anyDataChange]);
 
   return (
     <>
@@ -44,12 +44,8 @@ const ManageCustomer = ({routeName}) => {
           </div>
         ) : (
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 m-0 p-0">
-            {allCustomer.map((data) => (
-              <CustomerCard
-                routeName={routeName}
-                key={data.id}
-                customerData={data}
-              />
+            {allAdminEmployee.map((data) => (
+              <AdminEmployeeCard key={data.id} adminEmployeeData={data} />
             ))}
           </div>
         )}
@@ -58,4 +54,4 @@ const ManageCustomer = ({routeName}) => {
   );
 };
 
-export default ManageCustomer;
+export default ManageAdminEmployee;

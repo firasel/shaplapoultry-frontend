@@ -7,7 +7,6 @@ import {
   Switch,
   useHistory
 } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import cancelBtn from "../../../../images/cancelMenu.svg";
 import homeImg from "../../../../images/home.svg";
 import leftArrow from "../../../../images/leftArrow.svg";
@@ -15,6 +14,9 @@ import menuBtn from "../../../../images/menu.svg";
 import { setLoggedInUser } from "../../../../redux/loggin";
 import AddAdminEmployee from "../../BricksDashboard/AddAdminEmployee/AddAdminEmployee";
 import AddCustomer from "../../BricksDashboard/AddCustomer/AddCustomer";
+import ManageAdminEmployee from "../../BricksDashboard/ManageAdminEmployee/ManageAdminEmployee";
+import ManageCustomer from "../../BricksDashboard/ManageCustomer/ManageCustomer";
+import UpdateCustomer from "../../BricksDashboard/UpdateCustomer/UpdateCustomer";
 import AddPoultry from "../AddPoultry/AddPoultry";
 import ManagePoultry from "../ManagePoultry/ManagePoultry";
 import ShowPoultry from "../ShowPoultry/ShowPoultry";
@@ -23,7 +25,7 @@ import "./Poultry.scss";
 
 const Poultry = () => {
   const [expandSidebar, setExpandSidebar] = useState(false);
-  const [logoutShow,setLogoutShow] = useState(false);
+  const [logoutShow, setLogoutShow] = useState(false);
   const [active, setActive] = useState();
   const { loggedInUser } = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
@@ -37,7 +39,6 @@ const Poultry = () => {
   return (
     <Router>
       <div className="d-flex overflow-hidden">
-        <ToastContainer />
         {/* Dashboard sidBar Start */}
         <div
           className={`bricksSideBar minBricksSideBar min-vh-100 ${
@@ -59,12 +60,20 @@ const Poultry = () => {
             ShaplaPoultry
           </h2>
           {loggedInUser.rule === "admin" && (
-            <div
-              onClick={() => setActive(0)}
-              className={`${active === 0 && "activeBtn"}  sidebarMenu`}
-            >
-              <Link to="/poultry/addaccount">Add Admin/Employee</Link>
-            </div>
+            <>
+              <div
+                onClick={() => setActive(0)}
+                className={`${active === 0 && "activeBtn"}  sidebarMenu`}
+              >
+                <Link to="/poultry/addaccount">Add Admin/Employee</Link>
+              </div>
+              <div
+                onClick={() => setActive(10)}
+                className={`${active === 10 && "activeBtn"}  sidebarMenu`}
+              >
+                <Link to="/poultry/manageaccount">Manage Admin/Employee</Link>
+              </div>
+            </>
           )}
           <div
             onClick={() => setActive(1)}
@@ -82,7 +91,13 @@ const Poultry = () => {
             onClick={() => setActive(3)}
             className={`${active === 3 && "activeBtn"}  sidebarMenu`}
           >
-            <Link to="/poultry/addcustomer">Add Customer</Link>
+            <Link to="/poultry/customer/add">Add Customer</Link>
+          </div>
+          <div
+            onClick={() => setActive(4)}
+            className={`${active === 4 && "activeBtn"}  sidebarMenu`}
+          >
+            <Link to="/poultry/customer/manage">Manage Customer</Link>
           </div>
         </div>
         {/* Dashboard sidBar End */}
@@ -126,21 +141,31 @@ const Poultry = () => {
                   </div>
                   <div className="dropdown">
                     <button
-                    onClick={()=>{
-                      setLogoutShow(!logoutShow);
-                    }}
+                      onClick={() => {
+                        setLogoutShow(!logoutShow);
+                      }}
                       className="btn dropdown-toggle dopdownBtn"
                     >
-                     {loggedInUser.email}
+                      {loggedInUser.email}
                     </button>
 
-                    <ul className={`dopdownData ${logoutShow && 'dopdownDataShow'}`}
+                    <ul
+                      className={`dopdownData ${
+                        logoutShow && "dopdownDataShow"
+                      }`}
                     >
                       <li>
-                          <button onClick={()=>{
-                            localStorage.removeItem('Authorization');
-                            dispatch(setLoggedInUser({status:false,email:''}))}
-                        } className="btn">Logout</button>
+                        <button
+                          onClick={() => {
+                            localStorage.removeItem("Authorization");
+                            dispatch(
+                              setLoggedInUser({ status: false, email: "" })
+                            );
+                          }}
+                          className="btn"
+                        >
+                          Logout
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -157,6 +182,11 @@ const Poultry = () => {
                 <AddAdminEmployee />
               </Route>
             )}
+            {loggedInUser.rule === "admin" && (
+              <Route path="/poultry/manageaccount">
+                <ManageAdminEmployee />
+              </Route>
+            )}
             <Route path="/poultry/add">
               <AddPoultry />
             </Route>
@@ -169,8 +199,14 @@ const Poultry = () => {
             <Route path="/poultry/show/:Id">
               <ShowPoultry />
             </Route>
-            <Route path="/poultry/addcustomer">
-              <AddCustomer/>
+            <Route path="/poultry/customer/add">
+              <AddCustomer />
+            </Route>
+            <Route path="/poultry/customer/manage">
+              <ManageCustomer routeName="poultry" />
+            </Route>
+            <Route path="/poultry/customer/update/:Id">
+              <UpdateCustomer routeName="poultry" />
             </Route>
           </Switch>
         </div>

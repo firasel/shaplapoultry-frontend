@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import deleteImg from "../../../../images/delete.svg";
 import editImg from "../../../../images/edit.svg";
-import ErrorNotify from "../../../ToastNotify/ErrorNotify";
-import SuccessNotify from "../../../ToastNotify/SuccessNotify";
+import BricksModal from "../../../BricksModal/BricksModal";
 import "./BricksCard.scss";
 
 const BricksCard = ({ stateData, bricksData }) => {
   const [anyCardDelete, setAnyCardDelete] = stateData;
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modalCondition, setModalCondition] = useState(false);
 
   const {
     buyingPrice,
@@ -24,31 +23,19 @@ const BricksCard = ({ stateData, bricksData }) => {
   } = bricksData;
   const history = useHistory();
 
-  const handleDelete = (id) => {
-    setDeleteLoading(true);
-    fetch(`https://shaplapoultrysapi.herokuapp.com/bricks/delete?id=${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === true) {
-          SuccessNotify("Deleted Successful");
-          setAnyCardDelete(!anyCardDelete);
-        } else {
-          ErrorNotify("Delete Not Success!");
-        }
-        setDeleteLoading(false);
-      });
+  const handleDelete = async () => {
+    setModalCondition(true);
   };
 
   return (
     <div className="col px-2 py-3">
+      <BricksModal
+        anyDelete={[anyCardDelete, setAnyCardDelete]}
+        modalState={[modalCondition, setModalCondition]}
+        id={id}
+      />
       <div className="mx-auto bricksCardDesign shadow">
-        <h4>{name}</h4>
+        <h6>{name}</h6>
         <p>Category: {category}</p>
         <p>Company Name: {companyName}</p>
         <p>
@@ -77,16 +64,10 @@ const BricksCard = ({ stateData, bricksData }) => {
               <img src={editImg} alt="edit" />
             </button>
             <button
-              onClick={() => handleDelete(id)}
+              onClick={() => handleDelete()}
               className="btn cardBtn deleteBtn"
             >
-              {deleteLoading ? (
-                <div className="spinner-border text-light" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              ) : (
-                <img src={deleteImg} alt="delete" />
-              )}
+              <img src={deleteImg} alt="delete" />
             </button>
           </div>
         </div>

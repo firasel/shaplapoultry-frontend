@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import eyeHide from "../../images/eyeHide.svg";
 import eyeShow from "../../images/eyeShow.svg";
 import loginVector from "../../images/loginVector.jpg";
@@ -54,7 +54,6 @@ const Login = () => {
 
   return (
     <>
-      <ToastContainer autoClose={3000} />
       <div className="container">
         <div className="row loginContainer m-0 p-0">
           <div className="col-12 col-sm-12 col-md-6 col-lg-7 m-0 p-0 d-flex align-items-center imgColumn">

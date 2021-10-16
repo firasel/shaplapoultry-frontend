@@ -2,41 +2,28 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import deleteImg from "../../../../images/delete.svg";
 import editImg from "../../../../images/edit.svg";
-import ErrorNotify from "../../../ToastNotify/ErrorNotify";
-import SuccessNotify from "../../../ToastNotify/SuccessNotify";
+import PoultryModal from "../../../PoultryModal/PoultryModal";
 import "./PoultryCard.scss";
 
 const PoultryCard = ({ stateData, poultryData }) => {
   const [anyCardDelete, setAnyCardDelete] = stateData;
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modalCondition, setModalCondition] = useState(false);
 
   const { buyingPrice, category, companyName, id, name, sellingPrice, stock } =
     poultryData;
   const history = useHistory();
 
-  const handleDelete = (id) => {
-    setDeleteLoading(true);
-    fetch(`https://shaplapoultrysapi.herokuapp.com/poultry/delete?id=${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === true) {
-          SuccessNotify("Deleted Successful");
-          setAnyCardDelete(!anyCardDelete);
-        } else {
-          ErrorNotify("Delete Not Success!");
-        }
-        setDeleteLoading(false);
-      });
+  const handleDelete =async () => {
+    setModalCondition(true);
   };
 
   return (
     <div className="col px-2 py-3">
+      <PoultryModal
+        anyDelete={[anyCardDelete, setAnyCardDelete]}
+        modalState={[modalCondition, setModalCondition]}
+        id={id}
+      />
       <div className="mx-auto bricksCardDesign shadow">
         <h4>{name}</h4>
         <p>Category: {category}</p>
@@ -69,15 +56,7 @@ const PoultryCard = ({ stateData, poultryData }) => {
             <button
               onClick={() => handleDelete(id)}
               className="btn cardBtn deleteBtn"
-            >
-              {deleteLoading ? (
-                <div className="spinner-border text-light" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              ) : (
-                <img src={deleteImg} alt="delete" />
-              )}
-            </button>
+            ><img src={deleteImg} alt="delete" /></button>
           </div>
         </div>
       </div>
